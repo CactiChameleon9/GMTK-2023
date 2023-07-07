@@ -12,7 +12,14 @@ config_version=5
 
 config/name="Gmtk-2023"
 config/features=PackedStringArray("4.1", "Mobile")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="res://Assets/gmtk-jam-2023-branding.png"
+config/icon="res://Assets/gmtk-jam-2023-branding.png"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [rendering]
 

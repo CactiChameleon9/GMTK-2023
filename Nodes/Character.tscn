@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqq1jkvlj40eq"]
+
+[ext_resource type="Texture2D" uid="uid://b7dip4x18f5h2" path="res://Assets/Apple.svg" id="1_l1exi"]
+[ext_resource type="Script" path="res://Nodes/Character.gd" id="1_nca3p"]
+[ext_resource type="Texture2D" uid="uid://cve2uvf85obbb" path="res://Assets/Shadow.svg" id="2_qjkah"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3skis"]
+radius = 44.0
+height = 102.0
+
+[node name="Character" type="CharacterBody2D"]
+position = Vector2(413, 335)
+motion_mode = 1
+script = ExtResource("1_nca3p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -45)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_3skis")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.580392)
+position = Vector2(0, -4)
+texture = ExtResource("2_qjkah")
+
+[node name="Apple" type="Sprite2D" parent="."]
+position = Vector2(-1, -76)
+texture = ExtResource("1_l1exi")

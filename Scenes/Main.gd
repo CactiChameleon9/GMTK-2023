@@ -3,7 +3,7 @@ extends Node2D
 var _time: float = 0
 
 var _normal_snake_eq = func(x: float): return (x**3 / 1000 - x**2 / 3.9 + x * 15)/30 + 1
-var _fast_snake_eq = func(x: float): return (1/1000*x**3 - 1/3.9*x**2 + 15*x)/30 - 100
+var _fast_snake_eq = func(x: float): x-=50; x/=1.5; return (x**3 / 1000 - x**2 / 3.9 + x * 15)/50 + 1
 var _bendy_snake_eq = func(x: float): return (1/1000*x**3 - 1/3.9*x**2 + 15*x)/30 - 100
 
 var _snake_infos: Dictionary = {

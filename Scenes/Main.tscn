@@ -107,7 +107,7 @@ unique_name_in_owner = true
 curve = SubResource("Curve2D_gfwft")
 
 [node name="SpawnPosition" type="PathFollow2D" parent="SnakeSpawner"]
-position = Vector2(182.116, 928)
+position = Vector2(182.121, 928)
 rotation = 3.14159
 progress = 4473.88
 

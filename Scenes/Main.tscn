@@ -69,7 +69,6 @@ metadata/_edit_lock_ = true
 position = Vector2(640, 360)
 
 [node name="Camera2D" type="Camera2D" parent="Character"]
-zoom = Vector2(0.1, 0.1)
 limit_left = -256
 limit_top = -144
 limit_right = 1536
@@ -112,4 +111,4 @@ position = Vector2(182.116, 928)
 rotation = 3.14159
 progress = 4473.88
 
-[connection signal="body_exited" from="SnakeDetector" to="." method="_on_snake_detector_body_exited"]
+[connection signal="area_exited" from="SnakeDetector" to="." method="_on_snake_detector_body_exited"]

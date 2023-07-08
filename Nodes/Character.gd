@@ -14,10 +14,12 @@ var _acceleration: float = 4500
 var _max_speed: float = 400
 var _resistance: float = 3000
 
+
 func _physics_process(delta):
 	# Get the move direction
 	_do_movement(delta)
 	_do_bouncing()
+
 
 func _do_movement(delta):
 	var move_direction := Vector2(Input.get_action_strength("ui_right")
@@ -74,3 +76,7 @@ func _do_bouncing():
 							_shadow_size_change/6, 0.25).as_relative()
 	_tweener.tween_property(_shadow_sprite, "scale", Vector2.ONE *
 							_shadow_size_change, 0.25).as_relative()
+
+
+func die():
+	print("death")

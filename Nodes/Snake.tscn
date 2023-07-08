@@ -7,13 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://c6rye8cpgjvxu" path="res://Assets/SnakeTail.svg" id="4_oaq8w"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5631g"]
-radius = 38.0
-height = 140.0
+radius = 32.0
+height = 116.0
 
-[node name="Snake" type="Node2D"]
-position = Vector2(83, 182)
+[node name="Snake" type="Node2D" groups=["snake"]]
+position = Vector2(400, 500)
 script = ExtResource("1_30n2b")
-move_rotation = 6.28319
 
 [node name="Body" type="Line2D" parent="."]
 width = 30.0
@@ -31,6 +30,16 @@ visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_7s1kg")
 
+[node name="KillArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="HeadCollision" type="CollisionShape2D" parent="KillArea"]
+unique_name_in_owner = true
+position = Vector2(40, -4)
+rotation = 1.5708
+scale = Vector2(0.5, 0.5)
+shape = SubResource("CapsuleShape2D_5631g")
+
 [node name="Head" type="CharacterBody2D" parent="."]
 motion_mode = 1
 
@@ -39,8 +48,4 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_nmtsr")
 offset = Vector2(64, -10)
 
-[node name="HeadCollision" type="CollisionShape2D" parent="Head"]
-position = Vector2(38, -2)
-rotation = 1.5708
-scale = Vector2(0.5, 0.5)
-shape = SubResource("CapsuleShape2D_5631g")
+[connection signal="body_entered" from="KillArea" to="." method="_on_kill_area_entered"]

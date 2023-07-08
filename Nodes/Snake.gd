@@ -15,21 +15,29 @@ var rotation_velocity: float = 0
 
 @export var target_location: Vector2
 
+@export var collision_segment_skip: int = 10
+
 @onready var _kill_area: Area2D = $%KillArea
 @onready var _kill_area_childs: int = _kill_area.get_child_count()
 
 var _time: float = 0
+var _frame: int = 0
 
+#func _ready():
+#	length /= segment_skip
 
 func _physics_process(delta: float):
 	_time += delta
+	_frame += 1
+	_frame %= collision_segment_skip
 	
 	_turn_toward_goal(delta)
 	_move_head(delta)
-	_update_body()
+	_update_body(_frame == 0)
 	_update_tail_position()
 	_update_head_position()
-	_add_collisions()
+	if _frame == 0:
+		_add_collisions()
 
 func _turn_toward_goal(delta):
 	var change = target_location - $Head.global_position
@@ -39,6 +47,7 @@ func _turn_toward_goal(delta):
 	rotation_velocity += delta * rotation_acceleration * direction
 	rotation_velocity = clamp(rotation_velocity, -rotation_max_speed, rotation_max_speed)
 	move_rotation += rotation_velocity * delta
+	_move_head_collision()
 
 func _move_head(delta):
 	# Update the Head's velocity
@@ -47,17 +56,18 @@ func _move_head(delta):
 	$Head.velocity = $Head.velocity.limit_length(max_speed)
 	$Head.move_and_slide()
 
-func _update_body():
+func _update_body(remove_collision: bool):
 	# Add a current position of the head to the points
 	$Body.add_point($Head.position)
 	
 	# Remove the last point if too long
 	if $Body.get_point_count() > length:
 		$Body.remove_point(0)
-		var to_remove: CollisionShape2D = _kill_area.get_child(_kill_area_childs)
-		if is_instance_valid(to_remove):
-			_kill_area.remove_child(to_remove)
-			to_remove.queue_free()
+		if remove_collision:
+			var to_remove: CollisionShape2D = _kill_area.get_child(_kill_area_childs)
+			if is_instance_valid(to_remove):
+				_kill_area.remove_child(to_remove)
+				to_remove.queue_free()
 
 func _update_tail_position():
 	# Update the tail position
@@ -94,14 +104,19 @@ func _add_collisions():
 	
 	new_shape.position = (point1 + point2) / 2
 	new_shape.rotation = atan2(change.y, change.x)
-	rect.extents = Vector2(change.length() / 2, $Body.width/2)
+	rect.extents = Vector2(change.length() * collision_segment_skip / 2, $Body.width/2)
 	
 	new_shape.shape = rect
 	
 	_kill_area.add_child(new_shape)
+
+func _move_head_collision():
+	if $Body.get_point_count() <= 1:
+		return # Needs previous point
 	
+	var prev_point: Vector2 = $Body.get_point_position($Body.get_point_count() - 2)
 	# Move the head collision so that it stays with the head
-	$%HeadCollision.position += $Head.position - point2
+	$%HeadCollision.position += $Head.position - prev_point
 	$%HeadCollision.rotation = $Head.rotation + PI/2
 
 

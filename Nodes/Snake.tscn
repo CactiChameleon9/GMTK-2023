@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1ekdfvee512s"]
+
+[ext_resource type="Texture2D" uid="uid://cj7mcaen2h14s" path="res://Assets/SnakeTongue.svg" id="1_7s1kg"]
+[ext_resource type="Script" path="res://Nodes/Snake.gd" id="1_30n2b"]
+[ext_resource type="Texture2D" uid="uid://b1031d8vndg0f" path="res://Assets/SnakeBody.svg" id="1_ef752"]
+[ext_resource type="Texture2D" uid="uid://drp6uku16h25f" path="res://Assets/SnakeHead.svg" id="2_nmtsr"]
+[ext_resource type="Texture2D" uid="uid://c6rye8cpgjvxu" path="res://Assets/SnakeTail.svg" id="4_oaq8w"]
+
+[node name="Snake" type="CharacterBody2D"]
+position = Vector2(83, 182)
+rotation = -6.28319
+motion_mode = 1
+script = ExtResource("1_30n2b")
+
+[node name="Body" type="Line2D" parent="."]
+width = 30.0
+texture = ExtResource("1_ef752")
+texture_mode = 2
+joint_mode = 2
+
+[node name="Tail" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_oaq8w")
+offset = Vector2(-15, 5)
+
+[node name="Head" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_nmtsr")
+offset = Vector2(64, -10)
+
+[node name="Tongue" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_7s1kg")

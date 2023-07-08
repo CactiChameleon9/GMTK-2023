@@ -1,7 +1,48 @@
-[gd_scene load_steps=2 format=3 uid="uid://bilolno4nrch4"]
+[gd_scene load_steps=4 format=3 uid="uid://bilolno4nrch4"]
 
+[ext_resource type="Script" path="res://Scenes/Main.gd" id="1_b8l74"]
 [ext_resource type="PackedScene" uid="uid://cqq1jkvlj40eq" path="res://Nodes/Character.tscn" id="1_hskob"]
+[ext_resource type="TileSet" uid="uid://w3saur1cuur7" path="res://Assets/Scenary/Scenary.tres" id="2_efpxg"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_b8l74")
+metadata/_edit_horizontal_guides_ = []
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_efpxg")
+format = 2
+layer_0/tile_data = PackedInt32Array(-196612, 1, 0, 65558, 1, 0, -589801, 1, 0, 786468, 1, 0, 1769540, 1, 0, 2097140, 4, 0, 3211252, 4, 0, 2949140, 4, 0, -458717, 4, 0, 852023, 4, 0, 3276857, 4, 0, 3145793, 4, 0, 2359363, 4, 0, 524358, 4, 0, 1638476, 4, 0, -65442, 4, 0, -524301, 5, 0, 983029, 5, 0, 2424822, 5, 0, -655348, 5, 0, 2621505, 5, 0, 3539032, 5, 0, 1900637, 5, 0, -589835, 6, 0, 1966073, 6, 0, 851963, 6, 0, 3866619, 6, 0, 1114113, 6, 0, 3014678, 6, 0, -131033, 6, 0, 196647, 6, 0, 3735593, 6, 0, 3145777, 6, 0, -524227, 6, 0, 3866685, 6, 0, 80, 6, 0, 2097234, 6, 0, -327595, 6, 0, 3145815, 6, 0, -262056, 6, 0, 1179739, 6, 0, 851960, 7, 0, 1703930, 7, 0, 917519, 7, 0, 3538966, 7, 0, 3080226, 7, 0, 2752550, 7, 0, 3735628, 7, 0, 2752503, 8, 0, 2490366, 8, 0, 720899, 12, 0, 1507331, 8, 0, 1245189, 8, 0, 1048582, 8, 0, 3211275, 8, 0, 655393, 8, 0, 3473444, 8, 0, 65573, 8, 0, 917547, 8, 0, 720950, 8, 0, 1179718, 8, 0, 2293832, 8, 0, 2687064, 8, 0, 3670108, 8, 0, 3473503, 8, 0, 2359392, 8, 0, 3145727, 9, 0, -851962, 9, 0, 1376272, 9, 0, 3407900, 9, 0, -655308, 9, 0, 393294, 9, 0, 2424910, 9, 0, 786419, 12, 0, 458755, 12, 0, 655411, 12, 0, 2555913, 4, 0, 2949129, 5, 0, 1769483, 6, 0, 2424870, 6, 0, 1769526, 6, 0, 2162713, 4, 0, 2228277, 4, 0, 1966116, 1, 0)
 
 [node name="Character" parent="." instance=ExtResource("1_hskob")]
+position = Vector2(618, 362)
+
+[node name="Camera2D" type="Camera2D" parent="Character"]
+limit_left = -256
+limit_top = -144
+limit_right = 1536
+limit_bottom = 864
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 1.2
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0

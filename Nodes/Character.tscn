@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqq1jkvlj40eq"]
+[gd_scene load_steps=6 format=3 uid="uid://cqq1jkvlj40eq"]
 
 [ext_resource type="Texture2D" uid="uid://b7dip4x18f5h2" path="res://Assets/Apple.svg" id="1_l1exi"]
 [ext_resource type="Script" path="res://Nodes/Character.gd" id="1_nca3p"]
 [ext_resource type="Texture2D" uid="uid://cve2uvf85obbb" path="res://Assets/Shadow.svg" id="2_qjkah"]
+[ext_resource type="Material" uid="uid://bxy4tee7o1m3q" path="res://Assets/PixelExplode.tres" id="3_1odpm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3skis"]
 radius = 44.0
@@ -24,5 +25,6 @@ position = Vector2(0, -4)
 texture = ExtResource("2_qjkah")
 
 [node name="Apple" type="Sprite2D" parent="."]
+material = ExtResource("3_1odpm")
 position = Vector2(-1, -76)
 texture = ExtResource("1_l1exi")

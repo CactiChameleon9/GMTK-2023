@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal live_changed(lives: int)
+signal dashed()
 
 @export var lives: int = 5
 
@@ -10,6 +11,8 @@ var _character_bounce_length: float = 45
 @onready var _shadow_sprite = $Shadow
 var _shadow_size_change: float = 0.2
 
+@onready var _collision_shape = $CollisionShape2D
+
 var _walking: bool = false
 var _bouncing: bool = false
 var _tweener: Tween
@@ -17,7 +20,10 @@ var _tweener: Tween
 var _acceleration: float = 4500
 var _max_speed: float = 400
 var _resistance: float = 3000
+var _dash_speed: float = 1800
 
+var _can_dash: bool = true
+var _dashing: bool = false
 
 func _ready():
 	live_changed.emit(lives)
@@ -27,14 +33,19 @@ func _physics_process(delta):
 	# Get the move direction
 	_do_movement(delta)
 	_do_bouncing()
+	_do_dash_checks()
 
 
 func _do_movement(delta):
+	
 	var move_direction := Vector2(Input.get_action_strength("ui_right")
 								- Input.get_action_strength("ui_left"),
 								Input.get_action_strength("ui_down")
 								- Input.get_action_strength("ui_up"))
 	move_direction = move_direction.limit_length()
+	
+	if _dashing:
+		move_direction = Vector2.ZERO
 	
 	# Move in direction (or resist if no movement input given)
 	if move_direction.is_zero_approx():
@@ -45,9 +56,9 @@ func _do_movement(delta):
 	else:
 		_walking = true
 		velocity += move_direction * delta * _acceleration
-	
-	# Limit the velocity to max
-	velocity = velocity.limit_length(_max_speed)
+		
+		# Limit the velocity to max
+		velocity = velocity.limit_length(_max_speed)
 	
 	# Actually move
 	move_and_slide()
@@ -86,6 +97,46 @@ func _do_bouncing():
 							_shadow_size_change, 0.25).as_relative()
 
 
+func _do_dash_checks():
+	if Input.is_action_just_pressed("ui_accept") and _can_dash:
+		# Set the dashed/dashing infos
+		dashed.emit()
+		_dashing = true
+		_can_dash = false
+		
+		# Disable collisions
+		_collision_shape.disabled = true
+		
+		# Tween transparency
+		var tween := create_tween() \
+					.set_ease(Tween.EASE_OUT) \
+					.set_trans(Tween.TRANS_QUART)
+		tween.tween_property(_character_sprite, "modulate", Color(0.8, 0.8, 0.8, 0.8), 0.25)
+		
+		# Set the velocity to the dash speed (in the right direction)
+		velocity = velocity.normalized() * _dash_speed
+	
+	# Dashed finished
+	if _dashing and velocity.length() <= _max_speed:
+		# Set the dashed/dashing infos
+		_dashing = false
+		
+		# Emable collisions
+		_collision_shape.disabled = false
+		
+		# Tween transparency
+		var tween := create_tween() \
+					.set_ease(Tween.EASE_IN) \
+					.set_trans(Tween.TRANS_QUART)
+		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.25)
+		
+		# Set the velocity to the dash speed (in the right direction)
+		velocity = velocity.normalized() * _dash_speed
+
 func die():
 	lives -= 1
 	live_changed.emit(lives)
+
+
+func _enable_dash():
+	_can_dash = true

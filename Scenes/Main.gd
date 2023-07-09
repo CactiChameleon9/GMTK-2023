@@ -66,3 +66,22 @@ func _on_snake_detector_body_exited(body): #TODO fix
 	
 	# Delete the snake
 	body.queue_free()
+
+
+func _character_death():
+	# Zoom the camera into the player (always from the bottom-left)
+	$%Camera.limit_bottom = 100000
+	$%Camera.limit_right = 100000
+	$%Camera.position += Vector2(500, 500)
+	$%Camera.reset_smoothing()
+	$%Camera.position = Vector2(0, 0)
+	$%Camera.zoom = Vector2.ONE * 3
+	
+	# Kill all of the snakes
+	for child in _snake_spawner.get_children():
+		if child.is_in_group("snake"):
+			child.queue_free()
+	
+	# Disable processing
+	set_process(false)
+	set_physics_process(false)

@@ -71,7 +71,8 @@ metadata/_edit_lock_ = true
 [node name="Character" parent="." instance=ExtResource("1_hskob")]
 position = Vector2(640, 360)
 
-[node name="Camera2D" type="Camera2D" parent="Character"]
+[node name="Camera" type="Camera2D" parent="Character"]
+unique_name_in_owner = true
 limit_left = -256
 limit_top = -144
 limit_right = 1536
@@ -138,5 +139,6 @@ progress = 4473.88
 
 [connection signal="area_exited" from="SnakeDetector" to="." method="_on_snake_detector_body_exited"]
 [connection signal="dashed" from="Character" to="UICanvasLayer/UI/DashIndicator" method="_dashed"]
+[connection signal="death" from="Character" to="." method="_character_death" flags=6]
 [connection signal="live_changed" from="Character" to="UICanvasLayer/UI/LivesHBox" method="_lives_updated"]
 [connection signal="can_dash" from="UICanvasLayer/UI/DashIndicator" to="Character" method="_enable_dash"]

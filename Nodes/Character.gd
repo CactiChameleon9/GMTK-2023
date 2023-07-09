@@ -2,8 +2,13 @@ extends CharacterBody2D
 
 signal live_changed(lives: int)
 signal dashed()
+signal death()
 
 @export var lives: int = 5
+
+@export var normal_sprite: Texture
+@export var hurt_sprite: Texture
+@export var dead_sprite: Texture
 
 @onready var _character_sprite = $Apple
 var _character_bounce_length: float = 45
@@ -27,6 +32,7 @@ var _dashing: bool = false
 
 func _ready():
 	live_changed.emit(lives)
+	_character_sprite.texture = normal_sprite
 
 
 func _physics_process(delta):
@@ -123,9 +129,11 @@ func _do_dash_checks():
 		_damage_immunity()
 
 
-func _damage_immunity():
+func _damage_immunity(hurt: bool = false):
 		# Disable collisions
 		_collision_shape.set_deferred("disabled", true)
+		
+		if hurt: _character_sprite.texture = hurt_sprite
 		
 		# Tween transparency
 		var tween := create_tween() \
@@ -139,6 +147,8 @@ func _damage_immunity():
 		
 		await tween.finished
 		
+		if hurt: _character_sprite.texture = normal_sprite
+		
 		# Enable collisions
 		_collision_shape.set_deferred("disabled", false)
 
@@ -148,6 +158,11 @@ func _enable_dash():
 
 
 func die():
-	_damage_immunity()
 	lives -= 1
 	live_changed.emit(lives)
+	
+	if lives <= 0:
+		death.emit()
+		_character_sprite.texture = dead_sprite
+	else:
+		_damage_immunity(true)

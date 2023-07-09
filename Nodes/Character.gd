@@ -16,7 +16,7 @@ var _character_bounce_length: float = 45
 @onready var _shadow_sprite = $Shadow
 var _shadow_size_change: float = 0.2
 
-@onready var _collision_shape = $CollisionShape2D
+@onready var _dash_audio = $DashAudioPlayer
 
 var _walking: bool = false
 var _bouncing: bool = false
@@ -25,7 +25,7 @@ var _tweener: Tween
 var _acceleration: float = 4500
 var _max_speed: float = 400
 var _resistance: float = 3000
-var _dash_speed: float = 1800
+var _dash_speed: float = 1200
 
 var _can_dash: bool = true
 var _dashing: bool = false
@@ -122,6 +122,8 @@ func _do_dash_checks():
 		
 		# Set the velocity to the dash speed (in the right direction)
 		velocity = velocity.normalized() * _dash_speed
+		
+		_dash_audio.play()
 	
 	# Dashed finished
 	if _dashing and velocity.length() <= _max_speed:
@@ -131,27 +133,27 @@ func _do_dash_checks():
 
 
 func _damage_immunity(hurt: bool = false):
-		# Disable collisions
-		_can_take_damage = false
-		
-		if hurt: _character_sprite.texture = hurt_sprite
-		
-		# Tween transparency
-		var tween := create_tween() \
-					.set_ease(Tween.EASE_IN_OUT) \
-					.set_trans(Tween.TRANS_SINE)
-		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
-		tween.tween_property(_character_sprite, "modulate", Color(.9, .9, .9, .8), 0.3)
-		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
-		tween.tween_property(_character_sprite, "modulate", Color(.9, .9, .9, .8), 0.3)
-		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
-		
-		await tween.finished
-		
-		if hurt: _character_sprite.texture = normal_sprite
-		
-		# Enable collisions
-		_can_take_damage = true
+	# Disable collisions
+	_can_take_damage = false
+	
+	if hurt: _character_sprite.texture = hurt_sprite
+	
+	# Tween transparency
+	var tween := create_tween() \
+				.set_ease(Tween.EASE_IN_OUT) \
+				.set_trans(Tween.TRANS_SINE)
+	tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
+	tween.tween_property(_character_sprite, "modulate", Color(.9, .9, .9, .8), 0.3)
+	tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
+	tween.tween_property(_character_sprite, "modulate", Color(.9, .9, .9, .8), 0.3)
+	tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
+	
+	await tween.finished
+	
+	if hurt: _character_sprite.texture = normal_sprite
+	
+	# Enable collisions
+	_can_take_damage = true
 
 
 func _enable_dash():
@@ -171,7 +173,8 @@ func die():
 	if lives <= 0:
 		death.emit()
 		_character_sprite.texture = dead_sprite
-	
+		set_process(false)
+		set_physics_process(false)
 	# Otherwise grant immunity
 	else:
 		_damage_immunity(true)

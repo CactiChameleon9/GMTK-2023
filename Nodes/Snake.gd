@@ -38,6 +38,8 @@ func _physics_process(delta: float):
 	_update_head_position()
 	if _frame == 0:
 		_add_collisions()
+	
+	check_for_collisions()
 
 func _turn_toward_goal(delta):
 	var change = target_location - $Head.global_position
@@ -118,12 +120,13 @@ func _move_head_collision():
 	var prev_point: Vector2 = $Body.get_point_position($Body.get_point_count() - 2)
 	# Move the head collision so that it stays with the head
 	$%HeadCollision.position += $Head.position - prev_point
-	$%HeadCollision.rotation = $Head.rotation + PI/2
+	$%HeadCollision.rotation = $Head.rotation
 
 
-func _on_kill_area_entered(body: Node):
-	if body.has_method("die"):
-		body.die()
+func check_for_collisions():
+	for body in $KillArea.get_overlapping_bodies():
+		if body.has_method("die"):
+			body.die()
 
 
 # https://www.gmlscripts.com/script/angle_difference

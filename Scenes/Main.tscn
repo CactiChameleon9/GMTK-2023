@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bilolno4nrch4"]
+[gd_scene load_steps=13 format=3 uid="uid://bilolno4nrch4"]
 
 [ext_resource type="Script" path="res://Scenes/Main.gd" id="1_b8l74"]
 [ext_resource type="PackedScene" uid="uid://cqq1jkvlj40eq" path="res://Nodes/Character.tscn" id="1_hskob"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Nodes/LivesHBox.gd" id="4_rq326"]
 [ext_resource type="Texture2D" uid="uid://domb3k8lrj1ue" path="res://Assets/UI/Heart.svg" id="4_v55nr"]
 [ext_resource type="PackedScene" uid="uid://5d4s1fhmn6bw" path="res://Nodes/DashIndicator.tscn" id="6_y3pdk"]
+[ext_resource type="AudioStream" uid="uid://b4qj8w0ncxaug" path="res://Assets/Mega Hyper Ultrastorm.mp3" id="7_hsyek"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ejdx6"]
 size = Vector2(128, 1008)
@@ -137,8 +138,13 @@ position = Vector2(182.121, 928)
 rotation = 3.14159
 progress = 4473.88
 
+[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_hsyek")
+autoplay = true
+
 [connection signal="area_exited" from="SnakeDetector" to="." method="_on_snake_detector_body_exited"]
 [connection signal="dashed" from="Character" to="UICanvasLayer/UI/DashIndicator" method="_dashed"]
 [connection signal="death" from="Character" to="." method="_character_death" flags=6]
+[connection signal="death" from="Character" to="UICanvasLayer/UI/DashIndicator" method="_disable_indicator"]
 [connection signal="live_changed" from="Character" to="UICanvasLayer/UI/LivesHBox" method="_lives_updated"]
 [connection signal="can_dash" from="UICanvasLayer/UI/DashIndicator" to="Character" method="_enable_dash"]

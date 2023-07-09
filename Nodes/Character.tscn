@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqq1jkvlj40eq"]
+[gd_scene load_steps=8 format=3 uid="uid://cqq1jkvlj40eq"]
 
 [ext_resource type="Texture2D" uid="uid://b7dip4x18f5h2" path="res://Assets/Apple.svg" id="1_l1exi"]
 [ext_resource type="Script" path="res://Nodes/Character.gd" id="1_nca3p"]
 [ext_resource type="Texture2D" uid="uid://cve2uvf85obbb" path="res://Assets/Shadow.svg" id="2_qjkah"]
 [ext_resource type="Texture2D" uid="uid://bsi2qh0mfbqb0" path="res://Assets/AppleDead.svg" id="2_uftwg"]
 [ext_resource type="Texture2D" uid="uid://crrndlspiy4pv" path="res://Assets/AppleHurt.svg" id="3_a1fvu"]
+[ext_resource type="AudioStream" uid="uid://cl05qhxfsarhy" path="res://Assets/Dash.wav" id="6_bkb3r"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3skis"]
 radius = 44.0
@@ -32,3 +33,7 @@ texture = ExtResource("2_qjkah")
 position = Vector2(-2.75, -31.25)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_l1exi")
+
+[node name="DashAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_bkb3r")
+volume_db = -6.656

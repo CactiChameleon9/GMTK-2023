@@ -2,14 +2,14 @@ extends Node2D
 
 var _time: float = 0
 
-var _normal_snake_eq = func(x: float): return (x**3 / 1000 - x**2 / 3.9 + x * 15)/30 + 1
-var _fast_snake_eq = func(x: float): x-=50; x/=1.5; return (x**3 / 1000 - x**2 / 3.9 + x * 15)/50 + 1
-var _bendy_snake_eq = func(x: float): return (1/1000*x**3 - 1/3.9*x**2 + 15*x)/30 - 100
+var _normal_snake_eq = func(x: float): return x**3/30000 - x**2/117 + x/2 + 1
+var _fast_snake_eq = func(x: float): return 0.0000266*x**3 - 0.00875*x**2 + 0.978*x - 29.32
+var _bendy_snake_eq = func(x: float): return 0.0000135*x**3 - 0.00637*x**2 + 1.071*x - 58.55
 
 var _snake_infos: Dictionary = {
 	"NormalSnake" = [_normal_snake_eq, 0, load("res://Nodes/SnakeTypes/NormalSnake.tscn")],
 	"FasterSnake" = [_fast_snake_eq, 0, load("res://Nodes/SnakeTypes/FasterSnake.tscn")],
-	"BendySnake"  = [_bendy_snake_eq, 0, load("res://Nodes/SnakeTypes/FasterSnake.tscn")]}
+	"BendySnake"  = [_bendy_snake_eq, 0, load("res://Nodes/SnakeTypes/BendySnake.tscn")]}
 
 @onready var _snake_spawner: Path2D = $%SnakeSpawner
 @onready var _snake_spawner_childs: int = _snake_spawner.get_child_count()
@@ -27,7 +27,6 @@ func _physics_process(delta):
 	# Spawn any missing snakes
 	for key in _snake_infos:
 		var snake_type = _snake_infos[key]
-		print(snake_type[0].call(_time))
 		while snake_type[0].call(_time) >= snake_type[1]:
 			# Randomise spawn position
 			var spawn_pos: PathFollow2D = _snake_spawner.get_node("SpawnPosition")

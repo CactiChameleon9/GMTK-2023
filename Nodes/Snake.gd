@@ -44,7 +44,8 @@ func _turn_toward_goal(delta):
 	var target_angle = atan2(change.y, change.x)
 	var direction = 1 if angle_difference(target_angle, move_rotation) < 0 else -1
 	
-	rotation_velocity += delta * rotation_acceleration * direction
+	rotation_velocity += delta * (rotation_acceleration + rotation_variation
+						* (randf()-0.5)) * direction
 	rotation_velocity = clamp(rotation_velocity, -rotation_max_speed, rotation_max_speed)
 	move_rotation += rotation_velocity * delta
 	_move_head_collision()

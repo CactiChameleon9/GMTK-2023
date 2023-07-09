@@ -29,6 +29,7 @@ var _dash_speed: float = 1800
 
 var _can_dash: bool = true
 var _dashing: bool = false
+var _can_take_damage: bool = true
 
 func _ready():
 	live_changed.emit(lives)
@@ -111,7 +112,7 @@ func _do_dash_checks():
 		_can_dash = false
 		
 		# Disable collisions
-		_collision_shape.disabled = true
+		_can_take_damage = false
 		
 		# Tween transparency
 		var tween := create_tween() \
@@ -131,7 +132,7 @@ func _do_dash_checks():
 
 func _damage_immunity(hurt: bool = false):
 		# Disable collisions
-		_collision_shape.set_deferred("disabled", true)
+		_can_take_damage = false
 		
 		if hurt: _character_sprite.texture = hurt_sprite
 		
@@ -150,7 +151,7 @@ func _damage_immunity(hurt: bool = false):
 		if hurt: _character_sprite.texture = normal_sprite
 		
 		# Enable collisions
-		_collision_shape.set_deferred("disabled", false)
+		_can_take_damage = true
 
 
 func _enable_dash():
@@ -158,11 +159,19 @@ func _enable_dash():
 
 
 func die():
+	# Return if cannot take damage
+	if not _can_take_damage:
+		return
+	
+	# Reduce lives and emit lives changed signal
 	lives -= 1
 	live_changed.emit(lives)
 	
+	# Emit death signal and change texture if dead
 	if lives <= 0:
 		death.emit()
 		_character_sprite.texture = dead_sprite
+	
+	# Otherwise grant immunity
 	else:
 		_damage_immunity(true)

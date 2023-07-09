@@ -5,8 +5,6 @@ extends HBoxContainer
 
 func _ready():
 	get_node(example_heart).visible = false
-	
-	_lives_updated(5)
 
 
 func _lives_updated(hearts: int):

@@ -127,3 +127,4 @@ rotation = 3.14159
 progress = 4473.88
 
 [connection signal="area_exited" from="SnakeDetector" to="." method="_on_snake_detector_body_exited"]
+[connection signal="live_changed" from="Character" to="UICanvasLayer/UI/LivesHBox" method="_lives_updated"]

@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+signal live_changed(lives: int)
+
+@export var lives: int = 5
+
 @onready var _character_sprite = $Apple
 var _character_bounce_length: float = 45
 
@@ -13,6 +17,10 @@ var _tweener: Tween
 var _acceleration: float = 4500
 var _max_speed: float = 400
 var _resistance: float = 3000
+
+
+func _ready():
+	live_changed.emit(lives)
 
 
 func _physics_process(delta):
@@ -79,4 +87,5 @@ func _do_bouncing():
 
 
 func die():
-	print("death")
+	lives -= 1
+	live_changed.emit(lives)

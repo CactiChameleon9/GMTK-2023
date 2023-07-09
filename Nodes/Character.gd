@@ -120,23 +120,34 @@ func _do_dash_checks():
 	if _dashing and velocity.length() <= _max_speed:
 		# Set the dashed/dashing infos
 		_dashing = false
-		
-		# Emable collisions
-		_collision_shape.disabled = false
+		_damage_immunity()
+
+
+func _damage_immunity():
+		# Disable collisions
+		_collision_shape.set_deferred("disabled", true)
 		
 		# Tween transparency
 		var tween := create_tween() \
-					.set_ease(Tween.EASE_IN) \
-					.set_trans(Tween.TRANS_QUART)
-		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.25)
+					.set_ease(Tween.EASE_IN_OUT) \
+					.set_trans(Tween.TRANS_SINE)
+		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
+		tween.tween_property(_character_sprite, "modulate", Color(.9, .9, .9, .8), 0.3)
+		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
+		tween.tween_property(_character_sprite, "modulate", Color(.9, .9, .9, .8), 0.3)
+		tween.tween_property(_character_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
 		
-		# Set the velocity to the dash speed (in the right direction)
-		velocity = velocity.normalized() * _dash_speed
-
-func die():
-	lives -= 1
-	live_changed.emit(lives)
+		await tween.finished
+		
+		# Enable collisions
+		_collision_shape.set_deferred("disabled", false)
 
 
 func _enable_dash():
 	_can_dash = true
+
+
+func die():
+	_damage_immunity()
+	lives -= 1
+	live_changed.emit(lives)

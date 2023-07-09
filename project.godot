@@ -21,6 +21,7 @@ config/icon="res://Assets/gmtk-jam-2023-branding.png"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/stretch/mode="canvas_items"
 
 [rendering]
 

@@ -107,7 +107,7 @@ theme_override_font_sizes/font_size = 50
 [node name="LivesHBox" type="HBoxContainer" parent="UICanvasLayer/UI"]
 layout_mode = 0
 offset_right = 332.0
-offset_bottom = 80.0
+offset_bottom = 64.0
 script = ExtResource("4_rq326")
 
 [node name="ExampleHeart" type="TextureRect" parent="UICanvasLayer/UI/LivesHBox"]
